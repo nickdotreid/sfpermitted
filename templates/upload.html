@@ -1,4 +1,9 @@
-<form action="" method="post">
-	
+{% extends "layout.html" %}
+
+{% block content %}
+<form action="/upload" method="POST" enctype="multipart/form-data">
+	<label for="spreadsheet">Upload spreadsheet</label>
+	<input type="file" id="spreadsheet" name="spreadsheet" />
 	<input type="submit" />
 </form>
+{% endblock %}
