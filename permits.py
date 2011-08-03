@@ -3,11 +3,14 @@ from flask import Flask, request, session, g, redirect, url_for, \
 from werkzeug import secure_filename
 from flaskext.sqlalchemy import SQLAlchemy
 
+import csv
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
+
+UPLOAD_PATH = '../uploads'
 
 
 @app.route('/')
@@ -18,16 +21,25 @@ def index():
 def upload_excel():
 	if request.method == 'POST' and 'spreadsheet' in request.files:
 		f = request.files['spreadsheet']
-		f.save('../uploads/' + secure_filename(f.filename))
-		flash("got spreadsheet "+f.filename)
+		filename = secure_filename(f.filename)
+		f.save(UPLOAD_PATH + filename)
+		flash("got spreadsheet "+ filename)
+		parse_excel(UPLOAD_PATH + filename)
 	if request.method == 'POST':
 		flash("posted")
 	return render_template('upload.html')
 	
-def parse_excel(filename):
-	
-	return True
+def parse_excel(file_location):
+	data = csv.DictReader(open(file_location))
+	count = 0
+	for row in data:
+		if add_permit(row):
+			count+=1
+	if count>0:
+		flash("Added " + str(count) + "permits")
 
+def add_permit(row):
+	return True
 
 class Permit(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
