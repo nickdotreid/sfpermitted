@@ -1,0 +1,18 @@
+<html>
+<head>
+	<title>SF Permitted</title>
+</head>
+<body>
+	<h1>SF Permitted</h1>
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    <ul class=flashes>
+	    {% for message in messages %}
+	      <li>{{ message }}</li>
+	    {% endfor %}
+	    </ul>
+	  {% endif %}
+	{% endwith %}
+	{% block content %}
+	{% endblock %}
+</body>
