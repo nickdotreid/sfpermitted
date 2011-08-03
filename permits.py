@@ -1,20 +1,32 @@
 from flask import Flask, request, session, g, redirect, url_for, \
 	abort, render_template, flash
+from werkzeug import secure_filename
 from flaskext.sqlalchemy import SQLAlchemy
-from flaskext.uploads import *
 
 
 app = Flask(__name__)
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
 
-spreadsheets = UploadSet('spreadsheet',DATA)
 
-@app.route('/', methods=['GET','POST'])
-def upload_excel():
-	if request.method == 'POST':
-		return 'POST REQUEST'
+@app.route('/')
+def index():
 	return render_template('upload.html')
+
+@app.route('/upload', methods=['GET','POST'])
+def upload_excel():
+	if request.method == 'POST' and 'spreadsheet' in request.files:
+		f = request.files['spreadsheet']
+		f.save('../uploads/' + secure_filename(f.filename))
+		flash("got spreadsheet "+f.filename)
+	if request.method == 'POST':
+		flash("posted")
+	return render_template('upload.html')
+	
+def parse_excel(filename):
+	
+	return True
 
 
 class Permit(db.Model):
