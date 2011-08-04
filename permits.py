@@ -36,6 +36,7 @@ def parse_excel(file_location):
 	data = csv.DictReader(open(file_location))
 	count = 0
 	for row in data:
+		row = permit_row_clean(row)
 		if add_permit(row):
 			count+=1
 	if count>0:
@@ -43,37 +44,40 @@ def parse_excel(file_location):
 		
 def permit_row_clean(row):
 	clean = {}
-	#clean keys
-	#big giant switch
 	for key in row.keys():
-		if re.search('(APP)',key):
-			clean['app_id'] = row[key]
-		if re.search('FILE',key):
-			clean['file_date'] = int(mktime(time.strptime(row[key],'%d-%b-%y')))
+		if row[key]:
+			if re.search('(APP)',key):
+				clean['app_id'] = row[key].lstrip('# ')
+			if re.search('FILE',key):
+				clean['file_date'] = make_unix_from_string(row[key])
+			if re.search('EXPIRATION',key):
+				clean['expiration_date'] = make_unix_from_string(row[key])
 	return clean
 
+def make_unix_from_string(letters):
+	return int(mktime(time.strptime(letters,'%d-%b-%y')))
+
 def add_permit(data):
-	# if permit ID does not exist
-	#permit = Permit(data['APPLICATION #'].strip('# '),)
+	# find or make address
+#	if Permit.query.filter_by(app_id=data['app_id']).first() is None:
+	permit = Permit(data['app_id'],data['file_date'],data['expiration_date'])
+	db.session.add(permit)
+	db.session.commit()
 	return True
 
 class Permit(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	app_id = db.Column(db.String(80), unique=True)
 	file_date = db.Column(db.Integer)
-	status_date = db.Column(db.Integer)
 	expiration_date = db.Column(db.Integer)
-	issued = db.Column(db.Boolean)
 
 	address_id = db.Column(db.Integer, db.ForeignKey('address.id'))
 	address = db.relationship('Address', backref=db.backref('permits', lazy='dynamic'))
 
-	def __init__(self, app_id, file_date, status_date, expiration_date, issued):
+	def __init__(self, app_id, file_date, expiration_date):
 		self.app_id = app_id
 		self.file_date = file_date
-		self.status_date = status_date
 		self.expiration_date = expiration_date
-		self.issued = issued
 
 
 	def __repr__(self):
