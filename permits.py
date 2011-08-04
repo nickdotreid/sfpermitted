@@ -13,7 +13,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
 
-UPLOAD_PATH = '../uploads'
+UPLOAD_PATH = '../uploads/'
 
 
 @app.route('/')
@@ -67,14 +67,14 @@ def add_permit(data):
 
 class Permit(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	app_id = db.Column(db.String(80), unique=True)
+	app_id = db.Column(db.String(80))
 	file_date = db.Column(db.Integer)
 	expiration_date = db.Column(db.Integer)
 
-	address_id = db.Column(db.Integer, db.ForeignKey('address.id'))
-	address = db.relationship('Address', backref=db.backref('permits', lazy='dynamic'))
+#	address_id = db.Column(db.Integer, db.ForeignKey('address.id'))
+#	address = db.relationship('Address', backref=db.backref('permits', lazy='dynamic'))
 
-	def __init__(self, app_id, file_date, expiration_date):
+	def __init__(self, app_id, file_date=0, expiration_date=0):
 		self.app_id = app_id
 		self.file_date = file_date
 		self.expiration_date = expiration_date
@@ -93,6 +93,5 @@ class Address(db.Model):
 
 	def __repr__(self):
 		return '<Address %r>' % self.street
-
 
 app.run(debug=True)
