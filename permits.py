@@ -4,6 +4,9 @@ from werkzeug import secure_filename
 from flaskext.sqlalchemy import SQLAlchemy
 
 import csv
+import time
+import re
+from time import mktime
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
@@ -37,8 +40,21 @@ def parse_excel(file_location):
 			count+=1
 	if count>0:
 		flash("Added " + str(count) + "permits")
+		
+def permit_row_clean(row):
+	clean = {}
+	#clean keys
+	#big giant switch
+	for key in row.keys():
+		if re.search('(APP)',key):
+			clean['app_id'] = row[key]
+		if re.search('FILE',key):
+			clean['file_date'] = int(mktime(time.strptime(row[key],'%d-%b-%y')))
+	return clean
 
-def add_permit(row):
+def add_permit(data):
+	# if permit ID does not exist
+	#permit = Permit(data['APPLICATION #'].strip('# '),)
 	return True
 
 class Permit(db.Model):
