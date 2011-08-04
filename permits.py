@@ -95,5 +95,3 @@ class Address(db.Model):
 
 	def __repr__(self):
 		return '<Address %r>' % self.street
-
-#app.run(debug=True)
