@@ -60,10 +60,12 @@ def make_unix_from_string(letters):
 def add_permit(data):
 	# find or make address
 #	if Permit.query.filter_by(app_id=data['app_id']).first() is None:
-	permit = Permit(data['app_id'],data['file_date'],data['expiration_date'])
-	db.session.add(permit)
-	db.session.commit()
-	return True
+	if 'app_id' in data and 'file_date' in data and 'expiration_date' in data:
+		permit = Permit(data['app_id'],data['file_date'],data['expiration_date'])
+		db.session.add(permit)
+		db.session.commit()
+		return True
+	return False
 
 class Permit(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -94,4 +96,4 @@ class Address(db.Model):
 	def __repr__(self):
 		return '<Address %r>' % self.street
 
-app.run(debug=True)
+#app.run(debug=True)
