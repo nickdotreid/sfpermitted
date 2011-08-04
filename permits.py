@@ -98,10 +98,19 @@ class Permit(db.Model):
 
 class Address(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
+	number = db.Column(db.String(20))
 	street = db.Column(db.String(500))
+	city = db.Column(db.String(200))
+	state = db.Column(db.String(100))
 
-	def __init__(self,street):
+	def __init__(self,number,street,city="San Francisco",state="California"):
+		self.number = number
 		self.street = street
-
+		self.city = city
+		self.state = state
+	
+	def full_address(self):
+		return self.number+" "+self.street+" "+self.city+", "+self.state
+	
 	def __repr__(self):
-		return '<Address %r>' % self.street
+		return '<Address %r>' % self.full_address()
