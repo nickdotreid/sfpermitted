@@ -4,17 +4,28 @@ from permits.models import *
 @app.route('/')
 def index():
 	return render_template('upload.html')
+	
+@app.route('/permit')
+def view_permit():
+	#find permit by app #
+	#display below
+	return "view permit"
+	
+@app.route('/address')
+def view_address():
+	#find address from url
+	#display addres
+	return "view address"
 
 @app.route('/upload', methods=['GET','POST'])
 def upload_excel():
 	if request.method == 'POST' and 'spreadsheet' in request.files:
 		f = request.files['spreadsheet']
 		filename = secure_filename(f.filename)
-		f.save(UPLOAD_PATH + filename)
-		flash("got spreadsheet "+ filename)
-		parse_excel(UPLOAD_PATH + filename)
-	if request.method == 'POST':
-		flash("posted")
+		if filename != '':
+			f.save(UPLOAD_PATH + filename)
+			flash("Parsing "+ filename)
+			parse_excel(UPLOAD_PATH + filename)
 	return render_template('upload.html')
 	
 def parse_excel(file_location):
