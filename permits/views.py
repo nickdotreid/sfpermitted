@@ -26,5 +26,11 @@ def upload_spreadsheet():
 		if filename != '':
 			f.save(UPLOAD_PATH + filename)
 			flash("Parsing "+ filename)
-			parse_csv(UPLOAD_PATH + filename)
+			rows = parse_csv(UPLOAD_PATH + filename)
+			permits_added = 0
+			for permit in rows:
+				if add_permit(permit):
+					permits_added += 1
+			if permits_added > 0:
+				flash(str(permits_added) + " new permits added")
 	return render_template('upload.html')

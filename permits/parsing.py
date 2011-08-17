@@ -6,11 +6,7 @@ def parse_csv(file_location):
 	data = csv.DictReader(open(file_location))
 	count = 0
 	for row in data:
-		row = permit_row_clean(row)
-		if add_permit(row):
-			count+=1
-	if count>0:
-		flash("Added " + str(count) + "permits")
+		yield permit_row_clean(row)
 		
 def permit_row_clean(row):
 	clean = {}
