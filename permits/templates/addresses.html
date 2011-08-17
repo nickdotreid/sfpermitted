@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Addresses</h2>
+<span class="">{{total_addresses}} permits</span>
+<ul>
+	{% for address in addresses%}
+	<li class="address">
+		<a href="/address/{{address.id}}">{{address.full_address()}}</a> // # of permits
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}

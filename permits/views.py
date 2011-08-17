@@ -13,9 +13,8 @@ def view_permit():
 	
 @app.route('/address')
 def view_address():
-	#find address from url
-	#display addres
-	return "view address"
+	addresses = Address.query.all()
+	return render_template('addresses.html', addresses=addresses, total_addresses = len(addresses))
 
 @app.route('/upload', methods=['GET','POST'])
 def upload_spreadsheet():
