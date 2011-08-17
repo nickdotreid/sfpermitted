@@ -1,5 +1,6 @@
 from permits import *
 from permits.models import *
+from permits.parsing import *
 
 @app.route('/')
 def index():
