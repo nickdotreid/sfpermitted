@@ -18,7 +18,7 @@ def view_address():
 	return "view address"
 
 @app.route('/upload', methods=['GET','POST'])
-def upload_excel():
+def upload_spreadsheet():
 	if request.method == 'POST' and 'spreadsheet' in request.files:
 		f = request.files['spreadsheet']
 		filename = secure_filename(f.filename)
