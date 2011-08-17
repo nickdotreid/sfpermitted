@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Permits</h2>
+<span class="">{{total_permits}} permits</span>
+<ul>
+	{% for permit in permits%}
+	<li class="permit">
+		<a href="/permit/{{permit.app_id}}">{{permit.app_id}}</a> @ <a href="/address/{{permit.address.id}}">{{permit.address.full_address()}}</a>
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}

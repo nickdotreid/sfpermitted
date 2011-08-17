@@ -8,9 +8,8 @@ def index():
 	
 @app.route('/permit')
 def view_permit():
-	#find permit by app #
-	#display below
-	return "view permit"
+	permits = Permit.query.all()
+	return render_template('permits.html', permits=permits, total_permits=len(permits))
 	
 @app.route('/address')
 def view_address():
