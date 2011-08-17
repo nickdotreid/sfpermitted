@@ -25,10 +25,10 @@ def upload_excel():
 		if filename != '':
 			f.save(UPLOAD_PATH + filename)
 			flash("Parsing "+ filename)
-			parse_excel(UPLOAD_PATH + filename)
+			parse_csv(UPLOAD_PATH + filename)
 	return render_template('upload.html')
 	
-def parse_excel(file_location):
+def parse_csv(file_location):
 	data = csv.DictReader(open(file_location))
 	count = 0
 	for row in data:
