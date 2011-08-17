@@ -1,17 +1,24 @@
 from permits import db
 
 def add_permit(data):
-	# find or make address
-#	if Permit.query.filter_by(app_id=data['app_id']).first() is None:
-	if 'app_id' in data and 'status_date' in data and 'file_date' in data and 'expiration_date' in data and 'street_number' in data and 'street_name' in data and 'street_suffix' in data:
-		address = Address(data['street_number'],data['street_name']+" "+data['street_suffix'])
-		permit = Permit(data['app_id'],data['file_date'],data['status_date'],data['expiration_date'])
-		permit.address = address
-		db.session.add(address)
-		db.session.add(permit)
-		db.session.commit()
-		return True
+	if 'app_id' in data and 'status_date' in data and 'file_date' in data and 'expiration_date' in data:
+		if Permit.query.filter_by(app_id = data['app_id']).first() is None:
+			permit = Permit(data['app_id'],data['file_date'],data['status_date'],data['expiration_date'])
+			permit.address = add_address(data)
+			db.session.add(permit)
+			db.session.commit()
+			return True
 	return False
+	
+def add_address(data):
+	if 'street_number' in data and 'street_name' in data and 'street_suffix' in data:
+		address = Address.query.filter_by(number = data['street_number'], street = data['street_name']+" "+data['street_suffix']).first()
+		if address is None:
+			address = Address(data['street_number'],data['street_name']+" "+data['street_suffix'])
+			db.session.add(address)
+			db.session.commit()
+		return address
+	return None
 
 class Permit(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
