@@ -59,3 +59,19 @@ class Address(db.Model):
 	
 	def __repr__(self):
 		return '<Address %r>' % self.full_address()
+		
+class GeoLocation(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	latitude = db.Column(db.Float)
+	longitude = db.Column(db.Float)
+	
+	address_id = db.Column(db.Integer, db.ForeignKey('address.id'))
+	address = db.relationship('Address', uselist=False,backref=db.backref('geolocation', lazy='dynamic'))
+	
+	def __init__(self,latitude,longitude):
+		self.latitude = latitude
+		self.longitude = longitude
+		
+	def __repr__(self):
+		return '<GeoLocation %r>' % self.id
+	
