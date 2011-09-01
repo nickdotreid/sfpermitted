@@ -1,4 +1,5 @@
 from permits import db
+from geopy import geocoders
 
 def add_permit(data):
 	if 'app_id' in data and 'status_date' in data and 'file_date' in data and 'expiration_date' in data:
@@ -17,8 +18,19 @@ def add_address(data):
 			address = Address(data['street_number'],data['street_name']+" "+data['street_suffix'])
 			db.session.add(address)
 			db.session.commit()
+			geocode_address(address)
 		return address
 	return None
+	
+def geocode_address(address):
+	g = geocoders.Google()
+	results = g.geocode(address.full_address(), exactly_one = False)
+	for result in results:
+		place, (lat, lng) = result
+		geo = GeoLocation(lat,lng)
+		geo.address = address
+		db.session.add(geo)
+		db.session.commit()
 
 class Permit(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
