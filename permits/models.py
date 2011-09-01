@@ -47,6 +47,9 @@ class Address(db.Model):
 	street = db.Column(db.String(500))
 	city = db.Column(db.String(200))
 	state = db.Column(db.String(100))
+	
+	geolocation_id = db.Column(db.Integer, db.ForeignKey('address.id'))
+	geolocation = db.relationship('GeoLocation', uselist=False, back_populates='address')
 
 	def __init__(self,number,street,city="San Francisco",state="California"):
 		self.number = number
@@ -66,7 +69,7 @@ class GeoLocation(db.Model):
 	longitude = db.Column(db.Float)
 	
 	address_id = db.Column(db.Integer, db.ForeignKey('address.id'))
-	address = db.relationship('Address', uselist=False,backref=db.backref('geolocation', lazy='dynamic'))
+	address = db.relationship('Address', uselist=False,back_populates='geolocation')
 	
 	def __init__(self,latitude,longitude):
 		self.latitude = latitude
