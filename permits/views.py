@@ -4,7 +4,7 @@ from permits.parsing import *
 
 @app.route('/')
 def index():
-	return render_template('upload.html')
+	return render_template('map.html')
 	
 @app.route('/permit')
 def view_permit():
