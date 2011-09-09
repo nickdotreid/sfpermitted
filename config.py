@@ -1,3 +1,4 @@
 DEBUG = False
-SECRET_KEY = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
+SECRET_KEY = 'shhh...secret'
+SQLALCHEMY_DATABASE_URI = 'sqlite:////path/to/database.db'
+DATA_FILE_LOCATION = '/path/to/files/'
