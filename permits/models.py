@@ -21,6 +21,12 @@ def add_address(data):
 		return address
 	return None
 	
+def locate_addresses():
+	addresses = Address.query.filter_by(geolocation=None).limit(100).all()
+	for address in addresses:
+		geocode_address(address)
+	
+	
 def geocode_address(address):
 	g = geocoders.Google()
 	results = g.geocode(address.full_address(), exactly_one = False)
