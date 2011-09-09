@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript" src="http://tile.cloudmade.com/wml/latest/web-maps-lite.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var cloudmade = new CM.Tiles.CloudMade.Web({key: '8ee2a50541944fb9bcedded5165f09d9', styleId:998});
+		var map = new CM.Map('cm-example', cloudmade);
+		map.setCenter(new CM.LatLng(51.514, -0.137), 15);
+	})
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="cm-example" style="width: 500px; height: 500px"></div>
+{% endblock %}
