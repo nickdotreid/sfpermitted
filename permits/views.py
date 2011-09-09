@@ -1,11 +1,10 @@
 from flask import Blueprint, request, session, g, redirect, url_for, \
 	abort, render_template, flash
-
+from permits import UPLOAD_PATH
 from permits.models import *
 from permits.parsing import *
 
 permit_app = Blueprint('permit_app', __name__,template_folder='templates')
-UPLOAD_PATH = '../uploads/'
 
 @permit_app.route('/')
 def index():
