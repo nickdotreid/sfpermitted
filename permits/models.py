@@ -18,7 +18,6 @@ def add_address(data):
 			address = Address(data['street_number'],data['street_name']+" "+data['street_suffix'])
 			db.session.add(address)
 			db.session.commit()
-			geocode_address(address)
 		return address
 	return None
 	
